@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Blood Bank Inventory{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <h1>Dashboard</h1>
+    <p>Manage blood units and issue the eligible unit that expires soonest.</p>
+</section>
+
+<section class="stats">
+    <div class="stat-card">
+        <span class="stat-label">Available Units</span>
+        <strong>{{ total_available }}</strong>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Expired Units (not issued)</span>
+        <strong>{{ expired_available }}</strong>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Available Blood Groups</h2>
+    {% if group_rows %}
+    <div class="group-list">
+        {% for row in group_rows %}
+        <div class="group-item">
+            <span class="blood-type">{{ row['blood_group'] }}</span>
+            <span>{{ row['quantity'] }} unit(s)</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">No unexpired blood units are currently available.</p>
+    {% endif %}
+</section>
+
+<section class="quick-links">
+    <a class="button" href="{{ url_for('add_unit') }}">+ Add Blood Unit</a>
+    <a class="button button-secondary" href="{{ url_for('inventory') }}">View Inventory</a>
+    <a class="button button-secondary" href="{{ url_for('issue_blood') }}">Issue Blood</a>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Issue Blood | Blood Bank Inventory{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <h1>Issue Blood</h1>
+    <p>Select a blood group. The system will choose its earliest-expiring eligible unit.</p>
+</section>
+<section class="panel form-panel">
+    <form method="POST">
+        <label for="blood_group">Requested Blood Group</label>
+        <select id="blood_group" name="blood_group" required>
+            <option value="">Select blood group</option>
+            {% for group in blood_groups %}
+            <option value="{{ group }}" {% if selected_group == group %}selected{% endif %}>{{ group }}</option>
+            {% endfor %}
+        </select>
+        <button class="button" type="submit">Issue One Unit</button>
+    </form>
+</section>
+
+{% if result %}
+<section class="panel result-panel">
+    <h2>Issued Unit</h2>
+    <p><strong>Unit ID:</strong> {{ result['unit_code'] }}</p>
+    <p><strong>Blood Group:</strong> {{ result['blood_group'] }}</p>
+    <p><strong>Expiry Date:</strong> {{ result['expiry_date'] }}</p>
+    <p><strong>Status:</strong> <span class="badge issued">Issued</span></p>
+</section>
+{% endif %}
+{% endblock %}

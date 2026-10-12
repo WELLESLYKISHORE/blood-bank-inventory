@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Inventory | Blood Bank Inventory{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <h1>Blood Inventory</h1>
+    <p>Units are listed by expiry date, earliest first.</p>
+</section>
+<section class="panel table-panel">
+    {% if units %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Unit ID</th><th>Blood Group</th><th>Expiry Date</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for unit in units %}
+                <tr>
+                    <td>{{ unit['unit_code'] }}</td>
+                    <td><span class="blood-type">{{ unit['blood_group'] }}</span></td>
+                    <td>{{ unit['expiry_date'] }}</td>
+                    <td>
+                        {% if unit['status'] == 'Issued' %}
+                            <span class="badge issued">Issued</span>
+                        {% elif unit['expiry_date'] < today %}
+                            <span class="badge expired">Expired</span>
+                        {% else %}
+                            <span class="badge available">Available</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="muted">No blood units have been added yet.</p>
+    <a class="button" href="{{ url_for('add_unit') }}">Add First Unit</a>
+    {% endif %}
+</section>
+{% endblock %}
